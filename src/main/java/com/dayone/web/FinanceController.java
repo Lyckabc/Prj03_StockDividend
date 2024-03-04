@@ -20,5 +20,4 @@ public class FinanceController {
         var result = this.financeService.getDividendByCompanyName(companyName);
         return ResponseEntity.ok(result);
     }
-
 }

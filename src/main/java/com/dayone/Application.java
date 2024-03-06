@@ -1,5 +1,8 @@
 package com.dayone;
 
+import com.dayone.model.Company;
+import com.dayone.model.ScrapedResult;
+import com.dayone.scraper.YahooFinanceScraper;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,7 +21,16 @@ import java.io.IOException;
 public class Application {
 
     public static void main(String[] args) {
-//        SpringApplication.run(Application.class, args);
+        SpringApplication.run(Application.class, args);
+/*
+        String s = "Hello my name %s";
+        String[] names = {"Green","RED", "YELLOW"};
+
+        for (String name : names) {
+            System.out.println(String.format(s, name));
+        }
+*/  // string format ex
+/*
         try {
             Connection connection = Jsoup.connect("https://finance.yahoo.com/quote/COKE/history?period1=1677907673&period2=1709530073&interval=1mo&filter=history&frequency=1mo&includeAdjustedClose=true");
             Document document = connection.get();
@@ -47,5 +59,16 @@ public class Application {
         } catch (IOException e) {
             e.printStackTrace();;
         }
+*/  // url to json data test ex
+/*
+        YahooFinanceScraper scraper = new YahooFinanceScraper();
+        ScrapedResult scrap = scraper.scrap(Company.builder().ticker("COKE").build());
+        System.out.println(scrap);
+*/ // scraper static url ex
+/*
+        YahooFinanceScraper scraper = new YahooFinanceScraper();
+        var scrap = scraper.scrapCompanyByTicker("COKE");
+        System.out.println(scrap);
+*/ // scraper CompanyByTicker url ex
     }
 }

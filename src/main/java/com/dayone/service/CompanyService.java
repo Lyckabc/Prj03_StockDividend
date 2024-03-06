@@ -29,24 +29,42 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CompanyService {
 
+    private final Scraper yahooFinanceScraper;
+
+    private final CompanyRepository companyRepository;
+    private final DividendRepository dividendRepository;
+
     private final Trie trie;
 
     public Company save(String ticker) {
-        throw new NotYetImplementedException();
+        boolean exists = this.companyRepository.existsByTicker(ticker);
+        if (exists) {
+            throw new RuntimeException("already exists ticker -> " + ticker);
+        }
+        return this.storeCompanyAndDividend(ticker);
     }
 
+
     public Page<CompanyEntity> getAllCompany(Pageable pageable) {
-        throw new NotYetImplementedException();
+        return this.companyRepository.findAll(pageable);
     }
 
     private Company storeCompanyAndDividend(String ticker) {
         // 1. ticker 를 기준으로 회사를 스크래핑
-
+        Company company = this.yahooFinanceScraper.scrapCompanyByTicker(ticker);
+        if (ObjectUtils.isEmpty(company)) {
+            throw new RuntimeException("failed to scrap ticker -> " + ticker);
+        }
         // 2. 해당 회사가 존재할 경우, 회사의 배당금 정보를 스크래핑
+        ScrapedResult scrapedResult = this.yahooFinanceScraper.scrap(company);
 
         // 3. 스크래핑 결과 반환
-
-        throw new NotYetImplementedException();
+        CompanyEntity companyEntity = this.companyRepository.save(new CompanyEntity());
+        List<DividendEntity> dividendEntityList = scrapedResult.getDividends().stream()
+                                                        .map(e -> new DividendEntity(companyEntity.getId(), e))
+                                                        .collect(Collectors.toList());
+        this.dividendRepository.saveAll(dividendEntityList);
+        return company;
     }
 
     public List<String> getCompanyNamesByKeyword(String keyword) {

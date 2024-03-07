@@ -60,7 +60,6 @@ public class CompanyController {
         if (ObjectUtils.isEmpty(ticker)) {
             throw new RuntimeException("ticker is empty");
         }
-
         Company company = this.companyService.save(ticker);
         this.companyService.addAutocompleteKeyword(company.getName());
         return ResponseEntity.ok(company);
@@ -77,5 +76,4 @@ public class CompanyController {
     public void clearFinanceCache(String companyName) {
         this.redisCacheManager.getCache(CacheKey.KEY_FINANCE).evict(companyName);
     }
-
 }

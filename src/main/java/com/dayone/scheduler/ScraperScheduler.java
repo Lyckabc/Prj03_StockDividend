@@ -29,7 +29,16 @@ public class ScraperScheduler {
     private final DividendRepository dividendRepository;
 
     private final Scraper yahooFinanceScraper;
-
+/*    @Scheduled(fixedDelay = 1000)
+    public void test1() throws InterruptedException {
+        Thread.sleep(10000); // 10초간 일시정지
+        System.out.println(Thread.currentThread().getName() + " -> 테스트 1 : " + LocalDateTime.now());
+    }
+    @Scheduled(fixedDelay = 1000)
+    public void test2() throws InterruptedException {
+        System.out.println(Thread.currentThread().getName() + " -> 테스트 2 : " + LocalDateTime.now());
+    }*/ // 1개의 스케줄만 실행되는것을 확인할 수 있는 테스트.
+// -> SchedulerConfig에서 ThreadPool 설정을 해줘서 여러개의 스케쥴이 돌아가도록 설정
     @CacheEvict(value = CacheKey.KEY_FINANCE, allEntries = true)
     @Scheduled(cron = "${scheduler.scrap.yahoo}")
     public void yahooFinanceScheduling() {
@@ -40,8 +49,11 @@ public class ScraperScheduler {
         // 회사마다 배당금 정보를 새로 스크래핑
         for (var company : companies) {
             log.info("scraping scheduler is started -> " + company.getName());
-            ScrapedResult scrapedResult = this.yahooFinanceScraper.scrap(
-                                                        new Company(company.getTicker(), company.getName()));
+            ScrapedResult scrapedResult =
+                    this.yahooFinanceScraper.scrap(Company.builder()
+                                                            .ticker(company.getTicker())
+                                                            .name(company.getName())
+                                                            .build());
 
             // 스크래핑한 배당금 정보 중 데이터베이스에 없는 값은 저장
             scrapedResult.getDividends().stream()
@@ -50,8 +62,19 @@ public class ScraperScheduler {
                     // 엘리먼트를 하나씩 디비든 레파지토리에 삽입
                     .forEach(e -> {
                         // do something
-                        throw new NotYetImplementedException();
+                        boolean exists = this.dividendRepository.existsByCompanyIdAndDate(e.getCompanyId(), e.getDate());
+                        if (!exists) {
+                            this.dividendRepository.save(e);
+                        }
                     });
+
+            //연속적으로 스크래핑 대상 사이트 서버에 요청을 날리지 않도록 일시정지
+            try {
+                Thread.sleep(3000); // 3seconds
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                Thread.currentThread().interrupt();  
+            }
 
             // 연속적으로 스크래핑 대상 사이트 서버에 요청을 날리지 않도록 일시정지
             try {

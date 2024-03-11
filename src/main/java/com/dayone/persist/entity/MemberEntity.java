@@ -51,21 +51,21 @@ public class MemberEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
-    }
+        return true;
+    } // 계정 만료 여부
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
-    }
+        return true;
+    } // 계정 잠김 여부
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
-    }
+        return true;
+    } // 자격 증명 만료 여부
 
     @Override
     public boolean isEnabled() {
-        return false;
-    }
+        return true;
+    } // 계정 활성화 여부
 }

@@ -49,7 +49,8 @@ public class CompanyService {
         return this.companyRepository.findAll(pageable);
     }
 
-    private Company storeCompanyAndDividend(String ticker) {
+    // storeCompanyAndDividend은 public으로 해야 메서드 호출이 가능함. (private은 company 저장이 안됨)
+    public Company storeCompanyAndDividend(String ticker) {
         // 1. ticker 를 기준으로 회사를 스크래핑
         Company company = this.yahooFinanceScraper.scrapCompanyByTicker(ticker);
         if (ObjectUtils.isEmpty(company)) {
@@ -90,8 +91,14 @@ public class CompanyService {
 
     public String deleteCompany(String ticker) {
         // 1. 배당금 정보 삭제
+        var company = this.companyRepository.findByTicker(ticker)
+                .orElseThrow(() -> new NoCompanyException());
         // 2. 회사 정보 삭제
-        throw new NotYetImplementedException();
+        this.dividendRepository.deleteAllByCompanyId(company.getId());
+        this.companyRepository.delete(company);
+
+        this.deleteAutocompleteKeyword(company.getName());
+        return company.getName();
     }
 
 }

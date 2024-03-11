@@ -63,20 +63,13 @@ public class ScraperScheduler {
                         boolean exists = this.dividendRepository.existsByCompanyIdAndDate(e.getCompanyId(), e.getDate());
                         if (!exists) {
                             this.dividendRepository.save(e);
+                            log.info("insert new dividend -> " + e);
                         }
                     });
 
             //연속적으로 스크래핑 대상 사이트 서버에 요청을 날리지 않도록 일시정지
             try {
                 Thread.sleep(3000); // 3seconds
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                Thread.currentThread().interrupt();  
-            }
-
-            // 연속적으로 스크래핑 대상 사이트 서버에 요청을 날리지 않도록 일시정지
-            try {
-                Thread.sleep(3000); // 3 seconds
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }

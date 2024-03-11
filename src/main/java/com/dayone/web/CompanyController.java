@@ -56,13 +56,21 @@ public class CompanyController {
     @PostMapping
     @PreAuthorize("hasRole('WRITE')")
     public ResponseEntity<?> addCompany(@RequestBody Company request) {
+        log.info("addCompany called with request: {}", request); // 요청 로깅
         String ticker = request.getTicker().trim();
         if (ObjectUtils.isEmpty(ticker)) {
+            log.warn("Ticker is empty"); // ticker 값 비어있음 경고
             throw new RuntimeException("ticker is empty");
         }
-        Company company = this.companyService.save(ticker);
-        this.companyService.addAutocompleteKeyword(company.getName());
-        return ResponseEntity.ok(company);
+        try {
+            Company company = this.companyService.save(ticker);
+            this.companyService.addAutocompleteKeyword(company.getName());
+            log.info("Company added successfully: {}", company); // 성공 로그
+            return ResponseEntity.ok(company);
+        } catch (Exception e) {
+            log.error("Error adding company: {}", e.getMessage(), e); // 오류 로깅
+            throw e; // 오류 재발생시키기
+        }
     }
 
     @DeleteMapping("/{ticker}")

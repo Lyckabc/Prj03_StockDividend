@@ -31,6 +31,7 @@ public class FinanceService {
     //자주 변경이 되는 데이터 인가?
     @Cacheable(key = "#companyName", value = CacheKey.KEY_FINANCE)
     public ScrapedResult getDividendByCompanyName(String companyName) {
+        log.info("캐시에서 {} 회사의 배당금 정보를 조회합니다.", companyName);
         // 1. 회사명을 기준으로 회사 정보를 조회
         CompanyEntity company = this.companyRepository.findByName(companyName)
                                             .orElseThrow(() -> new NoCompanyException());
@@ -52,7 +53,10 @@ public class FinanceService {
                                                     .map(e -> new Dividend(e.getDate(), e.getDividend()))
                                                     .collect(Collectors.toList());
 
-        return new ScrapedResult(new Company(company.getTicker(), company.getName()),
-                                dividends);
+        ScrapedResult result = new ScrapedResult(new Company(company.getTicker(), company.getName()), dividends);
+
+        log.info("{} 회사의 배당금 정보가 캐시에 저장됩니다.", companyName);
+
+        return result;
     }
 }

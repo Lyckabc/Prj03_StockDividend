@@ -8,13 +8,15 @@ spring:
       path: /h2-console
 
   jpa:
-    hibernate:
-      #초기에만 create - Hibernate가 실행될 때 데이터베이스 스키마를 생성합니다.
-      #즉, 이 설정은 애플리케이션을 시작할 때마다 데이터베이스 스키마를 삭제하고 다시 만듭니다. 따라서 이전의 데이터는 모두 삭제됩니다.
-      #실제 운영 환경에서는 "validate" 또는 "none"과 같은 값을 사용하는 것이 보다 안전
-      ddl-auto: create
-      # spring boot 버전에 따라 설정
-      use-new-id-generator-mappings: false
+    properties:
+      hibernate:
+        #초기에만 create - Hibernate가 실행될 때 데이터베이스 스키마를 생성합니다.
+        #즉, 이 설정은 애플리케이션을 시작할 때마다 데이터베이스 스키마를 삭제하고 다시 만듭니다. 따라서 이전의 데이터는 모두 삭제됩니다.
+        #실제 운영 환경에서는 "validate" 또는 "none"과 같은 값을 사용하는 것이 보다 안전
+        ddl-auto: create
+        # spring boot 버전에 따라 설정
+        use-new-id-generator-mappings: false
+        format_sql: true
     show-sql: true
     # spring boot 2.5이상부터
     defer-datasource-initialization: true

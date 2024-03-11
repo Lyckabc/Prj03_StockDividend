@@ -12,16 +12,36 @@
 				{
 					"name": "/auth/signin",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"username\" : \"grace\",\r\n\t\"password\" : \"grace123!@#\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/auth/signin"
 					},
 					"response": []
 				},
 				{
 					"name": "/auth/signup",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"username\" : \"grace\",\r\n\t\"password\" : \"grace123!@#\",\r\n\t\"roles\" : [\"ROLE_READ\",\"ROLE_WRITE\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/auth/signup"
 					},
 					"response": []
 				}
@@ -34,7 +54,38 @@
 					"name": "조회",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJncmFjZSIsInJvbGVzIjpbIlJPTEVfUkVBRCIsIlJPTEVfV1JJVEUiXSwiaWF0IjoxNzEwMTM2NTQ0LCJleHAiOjE3MTAxNDAxNDR9.TovNHE4AQlO8EvS7Nr-z9RoYUVniR3mIxAkHRwqwMyP7R4sMwXK0yxBR3gh9ZpklII31Aach7WBqgcOe3ZpOug",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/finance/dividend/Wayfair Inc.",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"finance",
+								"dividend",
+								"Wayfair Inc."
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJncmFjZSIsInJvbGVzIjpbIlJPTEVfUkVBRCIsIlJPTEVfV1JJVEUiXSwiaWF0IjoxNzEwMTE5MjA1LCJleHAiOjE3MTAxMjI4MDV9.YQxBYPiMQQjCAw_x_ys8NnlmjGG1rh2BuA7QKbhI51ED4kLGArm1D4Kb0v2AIPsYILxOwljgLTghViQjEc180A",
+									"disabled": true
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"disabled": true
+								}
+							]
+						}
 					},
 					"response": []
 				}
@@ -46,16 +97,82 @@
 				{
 					"name": "company delete",
 					"request": {
-						"method": "GET",
-						"header": []
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"algorithm": "HS256",
+								"isSecretBase64Encoded": false,
+								"payload": "{}",
+								"addTokenTo": "header",
+								"headerPrefix": "Bearer",
+								"queryParamKey": "token",
+								"header": "{}"
+							}
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJncmFjZSIsInJvbGVzIjpbIlJPTEVfUkVBRCIsIlJPTEVfV1JJVEUiXSwiaWF0IjoxNzEwMTM2NTQ0LCJleHAiOjE3MTAxNDAxNDR9.TovNHE4AQlO8EvS7Nr-z9RoYUVniR3mIxAkHRwqwMyP7R4sMwXK0yxBR3gh9ZpklII31Aach7WBqgcOe3ZpOug",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/company/MMM"
 					},
 					"response": []
 				},
 				{
 					"name": "company 추가",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-type": true
+						}
+					},
 					"request": {
-						"method": "GET",
-						"header": []
+						"auth": {
+							"type": "jwt",
+							"jwt": {
+								"algorithm": "HS512",
+								"isSecretBase64Encoded": false,
+								"payload": "{}",
+								"addTokenTo": "header",
+								"headerPrefix": "Bearer",
+								"queryParamKey": "token",
+								"header": "{}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJncmFjZSIsInJvbGVzIjpbIlJPTEVfUkVBRCIsIlJPTEVfV1JJVEUiXSwiaWF0IjoxNzEwMTM2NTQ0LCJleHAiOjE3MTAxNDAxNDR9.TovNHE4AQlO8EvS7Nr-z9RoYUVniR3mIxAkHRwqwMyP7R4sMwXK0yxBR3gh9ZpklII31Aach7WBqgcOe3ZpOug",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ticker\" : \"COKEa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/company"
 					},
 					"response": []
 				},
@@ -63,7 +180,34 @@
 					"name": "전체 회사 조회",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJncmFjZSIsInJvbGVzIjpbIlJPTEVfUkVBRCIsIlJPTEVfV1JJVEUiXSwiaWF0IjoxNzEwMTM2NTQ0LCJleHAiOjE3MTAxNDAxNDR9.TovNHE4AQlO8EvS7Nr-z9RoYUVniR3mIxAkHRwqwMyP7R4sMwXK0yxBR3gh9ZpklII31Aach7WBqgcOe3ZpOug",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/company?size=10&page=0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"company"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -71,7 +215,31 @@
 					"name": "auto",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJncmFjZSIsInJvbGVzIjpbIlJPTEVfUkVBRCIsIlJPTEVfV1JJVEUiXSwiaWF0IjoxNzEwMTM2NTQ0LCJleHAiOjE3MTAxNDAxNDR9.TovNHE4AQlO8EvS7Nr-z9RoYUVniR3mIxAkHRwqwMyP7R4sMwXK0yxBR3gh9ZpklII31Aach7WBqgcOe3ZpOug",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/company/autocomplete?keyword=AAPL",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"company",
+								"autocomplete"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "AAPL"
+								}
+							]
+						}
 					},
 					"response": []
 				}

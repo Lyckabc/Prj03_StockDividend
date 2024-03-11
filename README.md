@@ -6,7 +6,7 @@
 
 ## 🔮 과제 시나리오
 
-[Chapter All_resize.pdf](README%2035b3f912561744db82070494214d4862/Chapter_All_resize.pdf)
+[Chapter All_resize.pdf](README%4862/Chapter_All_resize.pdf)
 
 ## ⭐ 필수 준수사항
 

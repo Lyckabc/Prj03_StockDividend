@@ -111,4 +111,7 @@ public class CompanyService {
         return company.getName();
     }
 
+    public boolean existsByTicker(String ticker) {
+        return companyRepository.existsByTicker(ticker);
+    }
 }

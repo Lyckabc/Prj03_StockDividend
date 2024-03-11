@@ -1,5 +1,7 @@
 package com.dayone.web;
 
+import com.dayone.exception.impl.AlreadyExistCompanyException;
+import com.dayone.exception.impl.NoCompanyException;
 import com.dayone.model.Company;
 import com.dayone.model.constants.CacheKey;
 import com.dayone.persist.entity.CompanyEntity;
@@ -62,6 +64,12 @@ public class CompanyController {
             log.warn("Ticker is empty"); // ticker 값 비어있음 경고
             throw new RuntimeException("ticker is empty");
         }
+        // 이미 존재하는 회사인지 검사
+        if (this.companyService.existsByTicker(ticker)) {
+            log.warn("이미 존재하는 회사명입니다: {}", ticker); // 이미 존재하는 회사 경고
+            throw new AlreadyExistCompanyException();
+        }
+
         try {
             Company company = this.companyService.save(ticker);
             this.companyService.addAutocompleteKeyword(company.getName());
